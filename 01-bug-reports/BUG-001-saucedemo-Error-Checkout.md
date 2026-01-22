@@ -2,20 +2,6 @@ Credenciales de prueba:
 Username: standard_user
 Password: secret_sauce
 
-🎯 TAREA:
-Entrá al sitio
-Hacé login
-Agregá 2 productos al carrito
-Andá al carrito
-Intentá hacer checkout
-Durante este proceso, prestá atención a:
-Validaciones de formularios
-Mensajes de error
-Comportamiento de botones
-Datos mostrados (precios, cantidades)
-Performance (velocidad de carga)
-ENCONTRÁ Y DOCUMENTÁ AL MENOS 1 BUG (hay varios plantados a propósito)
-
 BUG REPORT 001
 
 ### TÍTULO: Codigo postal invalido en el checkout
