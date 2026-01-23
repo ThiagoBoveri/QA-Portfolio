@@ -1,53 +1,42 @@
-Credenciales de prueba:
-Username: standard_user
-Password: secret_sauce
+## BUG REPORT #001
 
-BUG REPORT 001
-
-### TÍTULO: Codigo postal invalido en el checkout
-En los campos de información de usuario  del checkout no existe un formato definido para ningún campo
+### TÍTULO: Problema de ordenamiento
 
 ### SEVERIDAD:
 - [ ] ALTA (afecta funcionalidad importante)
-Los campos carecen de formato, se pueden ingresar todo tipo de caracteres sin limite alguno
 
 ### PRIORIDAD:
-- [ ] URGENTE (arreglar hoy)
-Es pertinente solcuinarlo dado que estoy puede afectar a los registros en la base de datos
-
+- [ ] ALTA (arreglar esta semana)
 ### AMBIENTE:
-- **URL:https://www.saucedemo.com/checkout-step-one.html
+- **URL:** https://www.saucedemo.com/inventory.html
+- 
 - **Browser:** LibreWolf
-- **OS:**: Linux DAT
+- **OS:**LinuxDat
 - **Resolución:** (1920x1080)
 
 ### PRECONDICIONES:
-El usuario debe estar logueado, el carrito debe tener productos en el carrito y se debe proceder con la compra
+El usuario debe estar logeado y debe haber ingreso a la seccion de compras
 
 ### PASOS PARA REPRODUCIR:
-1. Ir a https://www.saucedemo.com/checkout-step-one.html
-2. Click en campo de nombre
-3. Ingresa: thiago 
-4. Click en el campo de Last name: boveri
-5. Postal code/Zip: 341235451245349541465536
-4. Click en continue
-6. Observar resultado
+1. Ir a https://www.saucedemo.com/inventory.html
+2. Click en el boton Price Low to High
+5. Observar resultado
 
 ### RESULTADO ACTUAL:
-Luego de presionar el botón “continue” se accede a la seccion de “desciption”
+El ordenamiento no es de menor a mayor
 
 ### RESULTADO ESPERADO:
-Al presionar el boton “continue” se deberia de indicar que el formato de el codigo postal es invalido 
+Por logica los productos de mayor valor deberian estar primero y luego de manera decedente los demas productos
 
-### EVIDENCIA: no la puedo adjuntar ya que te voy a mandar solo texto pero lo tendre en cuenta para un caso real
-- Screenshot: [adjuntar]
-- Video: [adjuntar si es necesario]
-- Logs de consola: [si aplica]
+### EVIDENCIA:
+- Screenshot:
+<img width="1217" height="360" alt="imagen" src="https://github.com/user-attachments/assets/a586e54e-4b06-4be1-96eb-9b2afab466d3" />
+
+**Productos en orden incorrecto**:
+  - Se puede ver como el producto "Sauce Labs Fleecie Jacket" esta como el primer producto de menor coste cuando es el de mayor coste del catalogo de productos
 
 ### NOTAS ADICIONALES:
-Ocurre siempre
-No hay patron especifico es un error de un solo campo
-No
+Esto puede impacta de maneranegativa a los usuarios quebuscan precios mas bajos
 
 ---
 **Reportado por:** Thiago Boveri
