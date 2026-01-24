@@ -1,0 +1,348 @@
+## 🐛 BUG REPORT #[NÚMERO] - [TIPO: API/Security/Performance]
+
+### 📌 TÍTULO:
+[API/Endpoint] Descripción técnica del problema
+
+Ejemplo:
+- [API] Endpoint POST /users retorna 500 con payload válido
+- [Security] JWT token permanece válido después de logout
+- [Performance] Query /orders tarda 45+ segundos con 1000+ registros
+
+---
+
+### 🏷️ CLASIFICACIÓN TÉCNICA:
+
+**Tipo de bug:**
+- [ ] API REST
+- [ ] GraphQL
+- [ ] WebSocket
+- [ ] Seguridad (OWASP Top 10)
+- [ ] Performance/Scalability
+- [ ] Integración 3rd party
+- [ ] Database/Query
+- [ ] Autenticación/Autorización
+
+**Subtipo:**
+- [ ] Request malformado
+- [ ] Response inválido
+- [ ] Timeout
+- [ ] Race condition
+- [ ] Memory leak
+- [ ] SQL Injection
+- [ ] XSS
+- [ ] CSRF
+- [ ] Broken authentication
+- [ ] Otro: _______
+
+---
+
+### ⚠️ SEVERIDAD: [CRÍTICA/ALTA/MEDIA/BAJA]
+
+**Evaluación CVSS (para seguridad):**
+- Attack Vector: [Network/Adjacent/Local/Physical]
+- Attack Complexity: [Low/High]
+- Privileges Required: [None/Low/High]
+- User Interaction: [None/Required]
+- **Score CVSS:** [0.0 - 10.0]
+
+**Impacto técnico:**
+- Confidencialidad: [None/Low/High]
+- Integridad: [None/Low/High]
+- Disponibilidad: [None/Low/High]
+
+---
+
+### 🌍 AMBIENTE DE TESTING:
+
+**Infraestructura:**
+- **Ambiente:** Staging
+- **Region/Datacenter:** AWS us-east-1
+- **Load Balancer:** ALB v2
+- **CDN:** CloudFront enabled
+
+**Backend:**
+- **API Base URL:** https://api-staging.app.com/v2
+- **Framework:** Node.js 18.15.0 + Express 4.18.2
+- **Runtime:** Docker container (Alpine Linux)
+- **Database:** PostgreSQL 14.5 (RDS)
+- **Cache:** Redis 7.0.8
+- **Message Queue:** RabbitMQ 3.11
+
+**Configuración de red:**
+- **Request timeout:** 30 segundos
+- **Rate limit:** 100 req/min
+- **Max payload:** 10 MB
+- **SSL/TLS:** 1.3
+
+---
+
+### 🔐 AUTENTICACIÓN Y PERMISOS:
+
+**Método de autenticación:**
+- [ ] Bearer Token (JWT)
+- [ ] OAuth 2.0
+- [ ] API Key
+- [ ] Basic Auth
+- [ ] Session Cookie
+
+**Token de prueba:**
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Payload decodificado:**
+```json
+{
+  "userId": 12345,
+  "role": "admin",
+  "iat": 1706108625,
+  "exp": 1706112225
+}
+```
+
+**Permisos del usuario:**
+```
+- users:read ✅
+- users:write ✅
+- orders:read ✅
+- orders:delete ❌
+```
+
+---
+
+### 📡 REQUEST COMPLETO:
+
+**Endpoint:**
+```
+POST https://api-staging.app.com/v2/users
+```
+
+**Headers:**
+```http
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+X-Request-ID: req_abc123xyz
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+Accept: application/json
+```
+
+**Request Body (JSON):**
+```json
+{
+  "email": "test@example.com",
+  "password": "SecurePass123!",
+  "firstName": "John",
+  "lastName": "Doe",
+  "role": "user",
+  "metadata": {
+    "source": "web",
+    "campaign": "summer2024"
+  }
+}
+```
+
+**cURL equivalente:**
+```bash
+curl -X POST https://api-staging.app.com/v2/users \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJhbGc..." \
+  -d '{
+    "email": "test@example.com",
+    "password": "SecurePass123!",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "user"
+  }'
+```
+
+---
+
+### ❌ RESPONSE ACTUAL (Incorrecto):
+
+**Status Code:** `500 Internal Server Error`
+
+**Response Headers:**
+```http
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json
+X-Response-Time: 15234ms
+X-Request-ID: req_abc123xyz
+Date: Fri, 24 Jan 2026 15:23:45 GMT
+```
+
+**Response Body:**
+```json
+{
+  "error": {
+    "code": "INTERNAL_ERROR",
+    "message": "An unexpected error occurred",
+    "timestamp": "2026-01-24T15:23:45.123Z",
+    "requestId": "req_abc123xyz"
+  }
+}
+```
+
+**Server Logs (si accesible):**
+```
+2026-01-24 15:23:45.089 ERROR [UserService] Database constraint violation
+2026-01-24 15:23:45.091 ERROR [ErrorHandler] Unhandled exception in POST /users
+  Error: duplicate key value violates unique constraint "users_email_key"
+  at Query.parseE (/app/node_modules/pg/lib/query.js:245:18)
+  at Query.handleError (/app/node_modules/pg/lib/query.js:198:17)
+```
+
+---
+
+### ✅ RESPONSE ESPERADO (Correcto):
+
+**Caso 1: Email duplicado (debería retornar 409)**
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+```
+```json
+{
+  "error": {
+    "code": "EMAIL_ALREADY_EXISTS",
+    "message": "A user with this email already exists",
+    "field": "email",
+    "timestamp": "2026-01-24T15:23:45.123Z",
+    "requestId": "req_abc123xyz"
+  }
+}
+```
+
+**Caso 2: Creación exitosa (debería retornar 201)**
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+Location: /v2/users/12345
+```
+```json
+{
+  "data": {
+    "id": 12345,
+    "email": "test@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "user",
+    "createdAt": "2026-01-24T15:23:45.123Z",
+    "updatedAt": "2026-01-24T15:23:45.123Z"
+  },
+  "meta": {
+    "requestId": "req_abc123xyz"
+  }
+}
+```
+
+**Respuesta según RFC 7807 (Problem Details for HTTP APIs):**
+```json
+{
+  "type": "https://api.app.com/errors/email-conflict",
+  "title": "Email Already Exists",
+  "status": 409,
+  "detail": "A user with email 'test@example.com' already exists",
+  "instance": "/v2/users",
+  "timestamp": "2026-01-24T15:23:45Z"
+}
+```
+
+---
+
+### 🧪 CASOS DE PRUEBA EJECUTADOS:
+
+| # | Payload | Expected | Actual | Status |
+|---|---------|----------|--------|--------|
+| 1 | Email válido + datos OK | 201 Created | 500 Error | ❌ FAIL |
+| 2 | Email duplicado | 409 Conflict | 500 Error | ❌ FAIL |
+| 3 | Email inválido (`test@`) | 400 Bad Request | 400 Bad Request | ✅ PASS |
+| 4 | Password débil (`123`) | 400 Bad Request | 400 Bad Request | ✅ PASS |
+| 5 | Campo firstName vacío | 400 Bad Request | 400 Bad Request | ✅ PASS |
+| 6 | Payload malformado (JSON inválido) | 400 Bad Request | 400 Bad Request | ✅ PASS |
+
+**Conclusión:** Error handling específico NO funciona para casos de conflicto de DB.
+
+---
+
+### 📊 DATOS DE PERFORMANCE:
+
+**Tiempos de respuesta:**
+```
+Request enviado:     15:23:30.000
+Response recibido:   15:23:45.234
+Tiempo total:        15.234 segundos ⚠️
+
+Breakdown:
+- DNS Lookup:        23ms
+- TCP Connect:       45ms
+- TLS Handshake:     78ms
+- Request sent:      12ms
+- Waiting (TTFB):    15.034ms ⚠️ (PROBLEMA AQUÍ)
+- Content Download:  42ms
+```
+
+**Comparación con endpoint funcional:**
+```
+GET /users (list):   234ms ✅
+POST /users (bug):   15,234ms ❌ (65x más lento)
+```
+
+**Recursos del servidor durante el request:**
+```
+CPU Usage:     45% → 92% (spike)
+Memory:        2.3 GB → 4.1 GB
+DB Connections: 12 → 47 (pool: 50 max)
+Query time:    14.8 segundos
+```
+
+---
+
+### 🔒 ANÁLISIS DE SEGURIDAD (si aplica):
+
+**Vulnerabilidad detectada:**
+- **Tipo:** Information Disclosure (OWASP A01)
+- **Severidad CVSS:** 5.3 (Medium)
+
+**Problema:**
+El error 500 expone detalles internos de la base de datos en ambiente staging.
+Mensaje de error incluye:
+- Nombre de tabla: `users`
+- Nombre de constraint: `users_email_key`
+- Stack trace completo (en logs)
+
+**Explotación potencial:**
+1. Atacante puede enumerar estructura de DB
+2. Información útil para SQL injection attempts
+3. Expone tecnología backend (PostgreSQL)
+
+**Remediación recomendada:**
+```javascript
+// ❌ MAL (expone detalles internos)
+res.status(500).json({
+  error: error.message,  // "duplicate key violates..."
+  stack: error.stack
+});
+
+// ✅ BIEN (mensaje genérico)
+res.status(409).json({
+  error: {
+    code: "EMAIL_CONFLICT",
+    message: "This email is already registered"
+  }
+});
+```
+
+---
+
+### 🔄 PASOS DETALLADOS PARA REPRODUCIR:
+
+**Precondiciones:**
+1. Base de datos staging debe contener usuario con email `test@example.com`
+2. API debe estar corriendo en staging
+3. Token JWT debe estar vigente (no expirado)
+
+**Setup inicial (ejecutar una sola vez):**
+```sql
+-- Crear usuario de prueba en DB
+INSERT INTO users (email, password, first_name, last_name)
+VALUES ('test@example
