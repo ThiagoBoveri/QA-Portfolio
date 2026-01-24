@@ -3,13 +3,15 @@
 ### TÍTULO: Problema de ordenamiento
 
 ### SEVERIDAD:
-- [ ] ALTA (afecta funcionalidad importante)
+- [ ] Critica (afecta al correcto funcionamiento de la pagina)
+      - El ordenamiento de productos funciona incorrectamente
 
 ### PRIORIDAD:
-- [ ] ALTA (arreglar esta semana)
+- [ ] Urgente (arreglar hoy)
+      - Afecta la interaccion con las funcionalidad de ordenamiento
+      
 ### AMBIENTE:
 - **URL:** https://www.saucedemo.com/inventory.html
-- 
 - **Browser:** LibreWolf
 - **OS:**LinuxDat
 - **Resolución:** (1920x1080)
