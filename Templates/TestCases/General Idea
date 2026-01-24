@@ -1,0 +1,31 @@
+┌──────────────────────────────────────────────────────┐
+│  1. TEST CASE ID                                     │
+│     → Identificador único: TC-001, TC-LOGIN-001      │
+│                                                      │
+│  2. TÍTULO/NOMBRE                                    │
+│     → Descripción corta de QUÉ se testea            │
+│                                                      │
+│  3. DESCRIPCIÓN                                      │
+│     → Contexto y objetivo del test                  │
+│                                                      │
+│  4. PRECONDICIONES                                   │
+│     → Estado inicial requerido                      │
+│                                                      │
+│  5. DATOS DE PRUEBA                                  │
+│     → Inputs específicos a usar                     │
+│                                                      │
+│  6. PASOS DE EJECUCIÓN                              │
+│     → Procedimiento paso a paso                     │
+│                                                      │
+│  7. RESULTADO ESPERADO                               │
+│     → Qué DEBE pasar si funciona bien               │
+│                                                      │
+│  8. RESULTADO ACTUAL                                 │
+│     → Qué pasó realmente (PASS/FAIL)                │
+│                                                      │
+│  9. PRIORIDAD                                        │
+│     → Qué tan crítico es este test                  │
+│                                                      │
+│  10. TIPO DE TEST                                    │
+│     → Funcional, Regresión, Smoke, etc.             │
+└──────────────────────────────────────────────────────┘
