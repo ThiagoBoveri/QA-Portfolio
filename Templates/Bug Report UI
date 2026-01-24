@@ -1,0 +1,90 @@
+## 🐛 BUG REPORT #[NÚMERO]
+
+### 📌 TÍTULO:
+[Módulo/Pantalla] Descripción concreta del problema
+
+Ejemplos:
+- [Login] Botón "Entrar" deshabilitado con credenciales válidas
+- [Carrito] Contador muestra -1 al eliminar último producto
+- [Registro] Campo Email acepta formato inválido "usuario@"
+
+---
+
+### ⚠️ SEVERIDAD:
+- [ ] 🔴 CRÍTICA - Bloquea funcionalidad core / App crashea
+- [ ] 🟠 ALTA - Funcionalidad importante no funciona
+- [ ] 🟡 MEDIA - Funcionalidad secundaria afectada
+- [ ] 🟢 BAJA - Cosmético, typo, alineación
+
+**Justificación:**
+[Explicar por qué elegiste esta severidad]
+
+---
+
+### 🔥 PRIORIDAD:
+- [ ] URGENTE - Arreglar HOY
+- [ ] ALTA - Arreglar esta semana
+- [ ] MEDIA - Arreglar próximo sprint
+- [ ] BAJA - Backlog
+
+**Justificación:**
+[Explicar impacto en negocio/usuarios]
+
+---
+
+### 🌍 AMBIENTE:
+- **URL/Versión:** [URL exacta o versión de app]
+- **Browser/App:** [Chrome 131, Firefox 122, App Android 2.5.0]
+- **OS:** [Windows 11, macOS 14, Android 13]
+- **Resolución:** [1920x1080, 375x812 mobile]
+- **Dispositivo:** [Desktop, iPhone 13, Samsung Galaxy S21]
+
+---
+
+### 📝 PASOS PARA REPRODUCIR:
+
+**PRECONDICIONES:**
+- [Estado inicial requerido, ej: usuario logueado, carrito vacío]
+
+**PASOS:**
+1. [Acción específica con datos exactos]
+2. [Siguiente acción]
+3. [Siguiente acción]
+4. **OBSERVAR:** [Qué sucede - el bug]
+
+**DATOS DE PRUEBA:**
+- Campo X: `valor exacto`
+- Campo Y: `valor exacto`
+
+**FRECUENCIA:**
+[X/Y] intentos reproducible → Ej: 10/10 (100%), 5/10 (50% intermitente)
+
+---
+
+### ❌ RESULTADO ACTUAL:
+[Descripción clara de qué pasa - el comportamiento incorrecto]
+
+---
+
+### ✅ RESULTADO ESPERADO:
+[Descripción clara de qué DEBERÍA pasar]
+
+---
+
+### 📸 EVIDENCIA:
+![Screenshot o video](url-de-imagen)
+
+*Descripción de qué muestra la evidencia*
+
+---
+
+### 📌 NOTAS ADICIONALES:
+- [Información extra relevante]
+- [Workaround disponible si existe]
+- [Comparación con comportamiento en otro ambiente]
+
+---
+
+**Reportado por:** [Tu nombre]  
+**Fecha:** [YYYY-MM-DD]  
+**Build/Versión:** [v1.2.3 o production]
