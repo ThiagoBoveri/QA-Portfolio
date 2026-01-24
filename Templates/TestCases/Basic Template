@@ -1,0 +1,89 @@
+## TEST CASE #TC-[NÚMERO]
+
+### 📌 INFORMACIÓN GENERAL
+
+**Test Case ID:** TC-[MÓDULO]-[NÚMERO]  
+**Título:** [Descripción concisa de qué se testea]  
+**Módulo:** [Login / Carrito / Checkout / etc.]  
+**Prioridad:** [Alta / Media / Baja]  
+**Tipo de test:** [Funcional / Regresión / Smoke / Sanity / Negativo]
+
+**Creado por:** [Tu nombre]  
+**Fecha creación:** [YYYY-MM-DD]  
+**Última ejecución:** [YYYY-MM-DD]
+
+---
+
+### 📖 DESCRIPCIÓN
+
+[Explicar el objetivo del test case en 1-2 líneas]
+
+**Objetivo:** Verificar que [funcionalidad] se comporte correctamente cuando [condición].
+
+---
+
+### ⚙️ PRECONDICIONES
+
+- [ ] [Estado inicial 1]
+- [ ] [Estado inicial 2]
+- [ ] [Datos necesarios]
+
+Ejemplo:
+- [ ] Aplicación web accesible en https://www.saucedemo.com/
+- [ ] Usuario de prueba existe en el sistema
+- [ ] Navegador Chrome instalado
+
+---
+
+### 🔧 DATOS DE PRUEBA
+
+| Campo | Valor |
+|-------|-------|
+| Username | `standard_user` |
+| Password | `secret_sauce` |
+| URL | https://www.saucedemo.com/ |
+
+---
+
+### 📋 PASOS DE EJECUCIÓN
+
+| # | Acción | Resultado Esperado |
+|---|--------|-------------------|
+| 1 | [Paso específico] | [Qué debe pasar] |
+| 2 | [Siguiente paso] | [Qué debe pasar] |
+| 3 | [Siguiente paso] | [Qué debe pasar] |
+
+---
+
+### ✅ RESULTADO ESPERADO GENERAL
+
+[Descripción completa del comportamiento correcto esperado al final del flujo]
+
+---
+
+### 📊 RESULTADO DE EJECUCIÓN
+
+**Estado:** [ ] ✅ PASS | [ ] ❌ FAIL | [ ] ⏸️ BLOCKED | [ ] ⏭️ SKIPPED
+
+**Ejecutado en:**
+- Fecha: [YYYY-MM-DD]
+- Ambiente: [Staging / Production]
+- Browser: [Chrome 131]
+- OS: [Windows 11]
+
+**Observaciones:**
+[Notas sobre la ejecución, comportamientos inesperados, etc.]
+
+**Bug reportado:** [Link al bug report si FAIL]
+
+---
+
+### 🔗 INFORMACIÓN ADICIONAL
+
+**Relacionado con:**
+- Requisito: [REQ-001]
+- User Story: [US-123]
+- Otros test cases: [TC-002, TC-003]
+
+**Notas:**
+[Cualquier información adicional relevante]
