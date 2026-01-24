@@ -1,0 +1,398 @@
+## 🐛 BUG REPORT #[NÚMERO]
+
+### 📌 TÍTULO:
+[Módulo] Comportamiento incorrecto + condición específica
+
+---
+
+### 🏷️ CATEGORÍA:
+- [ ] Funcional (lógica de negocio)
+- [ ] UI/UX (interfaz, diseño)
+- [ ] Performance (lentitud, timeout)
+- [ ] Integración (API, servicios externos)
+- [ ] Seguridad (vulnerabilidad)
+- [ ] Datos (validación, integridad)
+- [ ] Compatibilidad (browser, dispositivo)
+
+---
+
+### ⚠️ SEVERIDAD: [CRÍTICA/ALTA/MEDIA/BAJA]
+
+**Justificación técnica:**
+- ¿Bloquea funcionalidad core? [Sí/No]
+- ¿Hay workaround? [Sí/No - describir]
+- ¿Afecta múltiples usuarios? [Sí/No - %%]
+- ¿Causa pérdida de datos? [Sí/No]
+
+**Criterios aplicados:**
+```
+CRÍTICA: App crashea O core bloqueado O pérdida datos O seguridad
+ALTA: Funcionalidad importante no funciona
+MEDIA: Funcionalidad secundaria afectada
+BAJA: Cosmético sin impacto funcional
+```
+
+---
+
+### 🔥 PRIORIDAD: [URGENTE/ALTA/MEDIA/BAJA]
+
+**Justificación de negocio:**
+- **Impacto en usuarios:** [% o cantidad estimada]
+- **Impacto financiero:** [Pérdida ventas, SLA, legal]
+- **Impacto reputacional:** [Reviews, prensa, redes]
+- **Deadline crítico:** [Release, demo, evento]
+
+---
+
+### 🌍 AMBIENTE DE TESTING:
+
+**Configuración del sistema:**
+- **Ambiente:** [Development / Staging / Production]
+- **URL Base:** [https://staging.app.com]
+- **API Version:** [v2.3.1]
+- **Database:** [PostgreSQL 14.5 / Staging DB]
+
+**Dispositivo/Browser:**
+- **Browser:** Chrome 131.0.6778.86 (64-bit)
+- **OS:** Windows 11 Pro (Build 22621)
+- **Resolución:** 1920x1080
+- **Viewport:** Desktop (no responsive mode)
+- **Network:** WiFi 4G/5G - 50 Mbps down / 10 Mbps up
+- **DevTools abierto:** [Sí/No]
+
+**Móvil (si aplica):**
+- **Dispositivo:** iPhone 13 Pro / Samsung Galaxy S21
+- **OS:** iOS 17.2 / Android 13
+- **App Version:** 2.5.1 (Build 347)
+- **Conexión:** WiFi / 4G / 5G
+
+---
+
+### 🔐 CREDENCIALES/DATOS DE PRUEBA:
+
+**Usuario de prueba:**
+- Username: `test_user_001`
+- Password: `TestPass123!`
+- Role: [Standard User / Admin / Guest]
+
+**Datos utilizados en el test:**
+```
+Campo 1: "valor exacto"
+Campo 2: 12345
+Campo 3: usuario@ejemplo.com
+```
+
+**IDs de entidades involucradas:**
+- User ID: 45678
+- Product ID: SKU-12345
+- Order ID: ORD-2024-001
+
+---
+
+### 📋 PRECONDICIONES:
+
+**Estado inicial requerido:**
+1. Usuario debe estar autenticado
+2. Carrito debe contener al menos 1 producto
+3. Datos de envío deben estar guardados previamente
+4. [Cualquier otra condición necesaria]
+
+**Setup de datos (si aplica):**
+```sql
+-- Scripts ejecutados antes del test
+INSERT INTO users (id, email) VALUES (123, 'test@test.com');
+```
+
+---
+
+### 🔄 PASOS PARA REPRODUCIR:
+
+**FLUJO COMPLETO:**
+
+1. **[SETUP]** Abrir navegador Chrome en modo incógnito (Ctrl + Shift + N)
+
+2. **[LOGIN]** 
+   - Ir a https://staging.app.com/login
+   - Ingresar username: `test_user_001`
+   - Ingresar password: `TestPass123!`
+   - Click en botón "Login"
+   - **VERIFICAR:** Redirige a dashboard (/dashboard)
+
+3. **[NAVEGACIÓN]**
+   - Desde dashboard → Click menú "Productos"
+   - Esperar carga completa de lista (spinner desaparece)
+   - Scroll hasta producto "Laptop Dell XPS 15"
+
+4. **[ACCIÓN PRINCIPAL]**
+   - Click botón "Agregar al carrito"
+   - **OBSERVAR:** Contador de carrito incrementa a 1
+   - Click ícono carrito (esquina superior derecha)
+
+5. **[CHECKOUT]**
+   - En página carrito → Click "Proceder al pago"
+   - Completar formulario:
+     - Nombre: `Juan Pérez`
+     - Dirección: `Av. Libertador 1234`
+     - Ciudad: `Buenos Aires`
+     - CP: `1425`
+   - Click "Continuar"
+
+6. **[PAGO]**
+   - Seleccionar método: "Tarjeta de crédito"
+   - Ingresar datos tarjeta de prueba:
+     - Número: `4111 1111 1111 1111`
+     - Vencimiento: `12/25`
+     - CVV: `123`
+   - Click "Finalizar compra"
+
+7. **[BUG OCURRE AQUÍ]**
+   - **OBSERVAR:** Spinner aparece
+   - **ESPERAR:** 30 segundos
+   - **RESULTADO:** Spinner no desaparece, página congelada
+
+**TIEMPO TOTAL DEL FLUJO:** ~3 minutos hasta el bug
+
+**FRECUENCIA DE REPRODUCCIÓN:**
+- Intentos: 10/10 (100% reproducible)
+- Ocurre: Siempre con tarjeta de prueba
+- NO ocurre: Con método "Transferencia bancaria"
+
+---
+
+### ❌ RESULTADO ACTUAL (Comportamiento incorrecto):
+
+**Qué sucede:**
+1. Al hacer click en "Finalizar compra", aparece spinner de carga
+2. Spinner permanece visible indefinidamente (testeado 5+ minutos)
+3. Página queda congelada, botones no responden
+4. No hay redirección a página de confirmación
+5. No se muestra mensaje de error
+
+**Estado del sistema después del bug:**
+- URL permanece en: `/checkout/payment`
+- Carrito mantiene productos (no se vacía)
+- Base de datos: Orden NO fue creada (verificado en DB)
+- Transacción de pago: NO se registró
+
+**Errores observables:**
+- **En interfaz:** Ningún mensaje de error visible
+- **En consola del navegador:**
+```javascript
+  Uncaught TypeError: Cannot read property 'confirmationId' of undefined
+    at processPayment (checkout.js:245)
+```
+- **En Network tab:**
+```
+  POST /api/v1/orders
+  Status: 500 Internal Server Error
+  Response time: 15234 ms
+```
+
+---
+
+### ✅ RESULTADO ESPERADO (Comportamiento correcto):
+
+**Flujo esperado:**
+1. Click en "Finalizar compra" → Spinner visible máx 3 segundos
+2. Request a API completado exitosamente (Status 200)
+3. Redirección automática a `/checkout/confirmation`
+4. Página de confirmación muestra:
+   - Mensaje: "¡Compra exitosa!"
+   - Número de orden: ORD-XXXX-YYYY
+   - Resumen del pedido (productos, total, dirección)
+   - Email de confirmación enviado
+5. Carrito se vacía (contador en 0)
+6. Orden creada en base de datos con estado "Paid"
+
+**Performance esperada:**
+- Tiempo de respuesta API: < 2 segundos
+- Tiempo total del flujo: < 5 segundos
+- Sin errores en consola
+
+**Experiencia de usuario:**
+- Feedback visual claro (spinner, luego confirmación)
+- Transición suave entre pasos
+- Información completa de la orden
+
+---
+
+### 📸 EVIDENCIA:
+
+#### 1. Screenshot del bug
+![Spinner infinito en checkout](https://imgur.com/abc123.png)
+*Captura tomada después de 2 minutos de espera - página congelada*
+
+#### 2. Video del flujo completo
+🎥 [Ver video (45 segundos)](https://loom.com/share/xyz789)
+*Muestra desde agregar producto hasta el timeout*
+
+#### 3. Error en consola del navegador
+```javascript
+// DevTools Console (F12)
+checkout.js:245 Uncaught TypeError: Cannot read property 'confirmationId' of undefined
+    at processPayment (checkout.js:245:18)
+    at HTMLButtonElement.<anonymous> (checkout.js:189:12)
+```
+
+#### 4. Network activity (Chrome DevTools)
+```
+Request URL: https://staging.app.com/api/v1/orders
+Request Method: POST
+Status Code: 500 Internal Server Error
+Response Time: 15234 ms
+
+Request Headers:
+  Content-Type: application/json
+  Authorization: Bearer eyJhbGc...
+
+Request Payload:
+{
+  "userId": 123,
+  "items": [...],
+  "paymentMethod": "credit_card"
+}
+
+Response Body:
+{
+  "error": "Database connection timeout",
+  "code": "DB_TIMEOUT",
+  "timestamp": "2026-01-24T15:23:45Z"
+}
+```
+
+#### 5. Comparación con ambiente funcional
+| Aspecto | **Staging (Bug)** | **Production (OK)** |
+|---------|-------------------|---------------------|
+| Tiempo respuesta | 15+ segundos | 1.2 segundos |
+| Status code | 500 | 200 |
+| Orden creada | ❌ No | ✅ Sí |
+| Confirmación | ❌ No | ✅ Sí |
+
+---
+
+### 💼 IMPACTO EN NEGOCIO:
+
+**Usuarios afectados:**
+- **Cantidad estimada:** 500-800 usuarios/día (15% del tráfico total)
+- **Segmento:** Usuarios que usan tarjeta de crédito en checkout
+- **Geografía:** Todos los mercados
+
+**Impacto financiero:**
+- **Pérdida directa:** $0 ventas en tarjeta (método más usado - 60%)
+- **Estimado mensual:** $150,000 USD en ventas perdidas
+- **Abandono de carrito:** 100% de usuarios afectados
+
+**Impacto en UX/Reputación:**
+- **Frustración:** Extrema (usuario no puede completar compra)
+- **Support tickets:** +45% en últimos 3 días
+- **Reviews negativas:** 12 menciones en últimas 24hs
+- **NPS:** Cayó de 72 a 58 en última semana
+
+**Implicaciones legales/compliance:**
+- **PCI-DSS:** Datos de tarjeta quedan en estado indefinido
+- **GDPR:** Transacciones fallidas sin notificación al usuario
+
+---
+
+### 🔧 INFORMACIÓN ADICIONAL:
+
+**Comparación entre ambientes:**
+```
+✅ Development: Checkout funciona OK (< 2 seg)
+✅ QA: Checkout funciona OK (< 2 seg)
+❌ Staging: Bug reproducible (timeout 15+ seg)
+❓ Production: No verificado aún (en investigación)
+```
+
+**Comparación entre métodos de pago:**
+```
+❌ Tarjeta de crédito: Bug 100% reproducible
+✅ Transferencia bancaria: Funciona OK
+✅ PayPal: Funciona OK
+✅ Mercado Pago: Funciona OK
+```
+
+**Datos técnicos del servidor (si aplicable):**
+```
+CPU: 85% usage durante el request
+RAM: 12.3 GB / 16 GB
+Database connections: 245/250 (near limit)
+Query execution time: 14.8 segundos (timeout configurado: 15 seg)
+```
+
+**Workaround disponible:**
+- **Para usuarios:** Usar método "Transferencia bancaria" (conversión -70%)
+- **Para equipo:** Reiniciar servicio de pagos cada 2 horas (temporal)
+
+**Posible causa raíz (hipótesis):**
+1. **Más probable:** Database query lenta por índice faltante en tabla `orders`
+2. **Posible:** Timeout mal configurado en integración con gateway de pago
+3. **Menos probable:** Memory leak en servicio de checkout
+
+**Sugerencias de fix:**
+1. **Inmediato:** Aumentar timeout de DB de 15 a 30 segundos
+2. **Corto plazo:** Optimizar query con índice en `orders.user_id`
+3. **Largo plazo:** Implementar queue asíncrona para procesamiento de órdenes
+
+**Tests de regresión sugeridos post-fix:**
+- [ ] Verificar tiempo de respuesta < 3 seg
+- [ ] Testear con 100 órdenes concurrentes
+- [ ] Validar creación correcta en DB
+- [ ] Confirmar email de confirmación enviado
+- [ ] Testear en todos los métodos de pago
+
+---
+
+### 🔗 REFERENCIAS:
+
+**Issues relacionados:**
+- #456: "Checkout lento en staging" (reportado hace 2 semanas)
+- #423: "Database timeout en reportes" (mismo error DB)
+
+**Documentación:**
+- [API Docs - POST /orders](https://docs.app.com/api/orders)
+- [Figma - Checkout flow](https://figma.com/file/xyz)
+- [Jira Epic - Payment Integration](https://jira.com/PROJ-123)
+
+**Logs del servidor (si accesible):**
+```
+2026-01-24 15:23:45 ERROR [PaymentService] Database timeout after 15000ms
+2026-01-24 15:23:45 ERROR [OrderController] Failed to create order for user 123
+2026-01-24 15:23:45 WARN [DatabasePool] Connection pool at 98% capacity
+```
+
+---
+
+### 📊 DATOS DE SESIÓN (para debugging):
+
+**Session ID:** `sess_abc123xyz789`  
+**Request ID:** `req_payment_001`  
+**User Agent:** `Mozilla/5.0 (Windows NT 10.0; Win64; x64)...`  
+**IP Address:** `192.168.1.100` (VPN: No)  
+**Timestamp:** 2026-01-24 15:23:45 UTC
+
+---
+
+### ✅ ESTADO DEL BUG:
+
+- [ ] 🆕 Nuevo (inicial)
+- [ ] 🔍 En investigación
+- [ ] ✅ Confirmado
+- [ ] 🔄 En progreso
+- [ ] 🧪 En testing (post-fix)
+- [ ] ✔️ Resuelto
+- [ ] ❌ No se arreglará (wont-fix)
+- [ ] 🔁 Reabierto
+
+**Asignado a:** [Nombre del developer]  
+**Sprint:** [Sprint 24.3]  
+**Estimación:** [3 story points]
+
+---
+
+**Reportado por:** Thiago Boveri (QA Analyst)  
+**Email:** thiagonicolasboveriolace@gmail.com  
+**Fecha reporte:** 2026-01-24  
+**Última actualización:** 2026-01-24  
+**Build/Versión:** v2.5.1-staging (Build #347)  
+**Ticket ID:** BUG-001
